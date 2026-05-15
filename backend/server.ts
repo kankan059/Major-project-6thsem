@@ -3,7 +3,7 @@ import http from "http"
 import connectDB from "./src/config/db.ts";
 import { Server } from "socket.io";
 import { setupSocket } from "./src/sockets/socketMain.ts";
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000
 const server = http.createServer(app);
 
 const io = new Server(server , {
@@ -28,6 +28,6 @@ io.on('connection', (socket) => {
 });
 
 //connecting with server
-server.listen(3000 , ()=>{
+server.listen(PORT , ()=>{
     console.log("server is running on ", PORT)
 })
