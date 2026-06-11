@@ -44,7 +44,7 @@ export const placeBid = async (req: any, res: Response) => {
 export const getBidsByJob = async (req: any, res: Response) => {
   try {
     const job = await Job.findById(req.params.jobId);
-    
+
     if (!job || job.client.toString() !== req.user.id) {
       return res.status(403).json({ message: 'Unauthorized to view bids for this job' });
     }
@@ -55,6 +55,8 @@ export const getBidsByJob = async (req: any, res: Response) => {
     res.status(500).json({ message: 'Error fetching bids' });
   }
 };
+
+
 
 export const acceptBid = async (req: any, res: Response) => {
   try {
@@ -90,5 +92,18 @@ export const acceptBid = async (req: any, res: Response) => {
     res.json({ message: 'Bid accepted and job started', job });
   } catch (error) {
     res.status(500).json({ message: 'Error accepting bid' });
+  }
+};
+
+
+
+export const getAllJobsbid = async (req: any, res: Response) => {
+  try {
+    // Finds all bids where freelancer matches req.user.id and populates job details
+    const bids = await Bid.find({ freelancer: req.user.id }).populate('job', 'title category budget description status');
+    res.status(200).json(bids);
+    // console.log(bids)
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching freelancer bids and job data' });
   }
 };

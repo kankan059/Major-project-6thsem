@@ -2,8 +2,10 @@ import mongoose, { Schema, Document } from 'mongoose';
 interface IMilestone {
   title: string;
   amount: number;
-  status: 'pending' | 'escrow_funded' | 'completed' | 'released';
-  razorpayOrderId?: string; // Optional kyunki Schema mein 'required: true' nahi hai
+  status: 'pending' | 'escrow_funded' | 'completed' | 'released' | "under_review";
+  razorpayOrderId?: string;
+  deliveryNotes: string;
+  fileUrl: string;
 }
 export interface IJob extends Document {
   client: mongoose.Types.ObjectId;
@@ -25,9 +27,11 @@ const JobSchema: Schema = new Schema({
   category: { type: String, required: true },
   status: {
     type: String,
-    enum: ['open', 'active', 'completed'],
+    enum: ['open', 'active', 'under_review', 'completed'],
     default: 'open'
   },
+  deliveryNotes: { type: String },
+  fileUrl: { type: String },
   hiredFreelancer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   milestones: [{
     title: { type: String, required: true },
@@ -37,7 +41,8 @@ const JobSchema: Schema = new Schema({
       enum: ['pending', 'escrow_funded', 'completed', 'released'],
       default: 'pending'
     },
-    razorpayOrderId: { type: String }
+    razorpayOrderId: { type: String },
+
   }]
 }, { timestamps: true });
 

@@ -7,10 +7,13 @@ export interface IMessage extends Document {
   createdAt: Date;
 }
 
-const MessageSchema: Schema = new Schema({
-  job: { type: mongoose.Schema.Types.ObjectId, ref: 'Job', required: true },
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  text: { type: String, required: true },
-}, { timestamps: true });
+const MessageSchema: Schema = new Schema(
+  {
+    job: { type: Schema.Types.ObjectId, ref: 'Job', required: true },
+    sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    text: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
 export default mongoose.model<IMessage>('Message', MessageSchema);

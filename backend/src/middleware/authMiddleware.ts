@@ -16,3 +16,12 @@ export const protect = (req: any, res: Response, next: NextFunction) => {
     res.status(401).json({ message: 'Not authorized, token failed' });
   }
 };
+
+export const authorizeRoles = (...roles: string[]) => {
+  return (req: any, res: Response, next: NextFunction) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ message: `Role (${req.user.role}) is not allowed to access this resource` });
+    }
+    next();
+  };
+};
